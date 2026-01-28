@@ -16,7 +16,7 @@ sap.ui.define([
 			/*	this.byId("locDropDown").setFilterFunction(function (sTerm, oItem) {
 					// A case-insensitive "string contains" style filter
 					return oItem.getText().match(new RegExp(sTerm, "i"));
-					testing
+					testing intial code
 				});*/
 
 			if (!this._busyDialog) {
