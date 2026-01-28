@@ -1,0 +1,64 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<Dialog contentWidth="50%" class="sapUiSizeCompact" stretch="{device>/system/phone}" draggable="true" busy="{jsonModel>/busyView}">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="Edit Lot Number"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<VBox>
+				<FlexBox class="sapUiSmallMargin" width="95%" justifyContent="Center">
+					<FlexBox alignItems="Center">
+						<Text text="Lot Number" class="sapUiSmallMarginBeginEnd"/>
+						<Input width="13rem" value="{jsonModel>/MainLOTNAME}" placeholder="Enter Lot Number"/>
+					</FlexBox>
+					<FlexBox alignItems="Center">
+						<Button type="Emphasized" text="Apply" press="onLotNumTemApply" class="sapUiSmallMarginBeginEnd"/>
+					</FlexBox>
+				</FlexBox>
+				<Table inset="false" items="{ path: 'jsonModel>/editlotNameData'}" width="100%">
+					<columns>
+						<Column width="20%">
+							<Label text="SNO." design="Bold"/>
+						</Column>
+						<Column width="40%">
+							<Label text="METRC UID" design="Bold"/>
+						</Column>
+						<Column width="40%">
+							<Label text="Harvest Name" design="Bold"/>
+						</Column>
+						<Column width="60%">
+							<Label text="Lot Number" design="Bold"/>
+						</Column>
+						<Column width="7%">
+							<Label text="" design="Bold"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{jsonModel>SNO}"/>
+								<Text text="{jsonModel>BatchNum}"/>
+								<Text text="{jsonModel>MnfSerial}"/>
+								<Input value="{jsonModel>LOTNAME}" placeholder="Enter Lot Number"/>
+								<!--<ComboBox selectedKey="{jsonModel>U_NLOCD_TO}" width="100%"-->
+								<!--	items="{path: 'jsonModel>/ChangeLocationList' ,sorter : { path : 'BinCode', descending : false }}" busy="{jsonModel>/ComboBoxBusy}">-->
+								<!--	<core:Item key="{jsonModel>Warehouse}-{jsonModel>AbsEntry}-{jsonModel>BinCode}" text="{jsonModel>BinCode}"/>-->
+								<!--</ComboBox>-->
+								<!--<Button icon="sap-icon://delete" press="onLocationDelete" type="Reject"/>-->
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</VBox>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" text="Update" press="onUpdateEditLotNumber"></Button>
+		</beginButton>
+		<endButton>
+			<Button type="Transparent" text="{i18n>Cancel}" press="onCloseEditLotNumber"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,71 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<Dialog class="sapUiSizeCompact"  contentHeight="240px" verticalScrolling="false" draggable="true">
+		 <!--<ScrollContainer horizontal="false" vertical="true" height="400px">-->
+		 	
+		
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="Destroy Plants"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<FlexBox direction="Column">
+				<InputListItem label="METRC UID">
+					<Input id="MetrcUID" enabled="false" width="20rem"/>
+				</InputListItem>
+				<InputListItem label="Waste Weight(g)">
+					<Input id="wasteWeight" enabled="false" width="20rem"/>
+				</InputListItem>
+				<InputListItem label="Waste Method">
+					<Input id="wasteMethod" enabled="false" width="20rem"/>
+				</InputListItem>
+				<InputListItem label="Material Used">
+					<Input id="materialUsed" enabled="false" width="20rem"/>
+				</InputListItem>
+				<InputListItem label="Reason">
+					<Input id="reason" enabled="false" width="20rem"/>
+				</InputListItem>
+				<InputListItem label="Notes">
+					<Input id="notes" enabled="false" width="20rem"/>
+				</InputListItem>
+
+				<!--<InputListItem label="METRC UID">-->
+				<!--	<Text id="MetrcUID"  text="{jsonModel>/changeDiffQtyObj/BatchNum}" width="20rem"/>-->
+				<!--</InputListItem>-->
+				<!--<InputListItem label="Waste Weight(g)">-->
+				<!--	<Text id="wasteWeight" enabled="false" width="20rem"/>-->
+				<!--</InputListItem>-->
+				<!--<InputListItem label="Waste Method">-->
+				<!--	<Text id="wasteMethod" enabled="false" width="20rem"/>-->
+				<!--</InputListItem>-->
+				<!--<InputListItem label="Material Used">-->
+				<!--	<Text id="materialUsed" enabled="false" width="20rem"/>-->
+				<!--</InputListItem>-->
+				<!--<InputListItem label="Reason">-->
+				<!--	<Text id="reason" enabled="false" width="20rem"/>-->
+				<!--</InputListItem>-->
+				<!--<InputListItem label="Notes">-->
+				<!--	<Text id="notes" enabled="false" width="20rem"/>-->
+				<!--</InputListItem>-->
+			</FlexBox>
+		</content>
+	
+		<FlexBox class="customDestroy">
+			<Button  type="Accept" text="Custom Destroy" press=""></Button>
+		</FlexBox>
+			<FlexBox class="customDestroyleft">
+					<Button type="Emphasized" text="Ok" press="changegrowthDiffQty"></Button>
+					<Button type="Transparent" text="{i18n>Cancel}" press="changeGrowthPhaseDiffQtyDialogClose"></Button>
+		</FlexBox>
+					
+		<!--<beginButton>-->
+		<!--	<Button type="Emphasized" text="Ok" press="changegrowthDiffQty"></Button>-->
+		<!--</beginButton>-->
+		<!--<endButton>-->
+		<!--	<Button type="Transparent" text="{i18n>Cancel}" press="changeGrowthPhaseDiffQtyDialogClose"></Button>-->
+		<!--</endButton>-->
+ <!--</ScrollContainer>-->
+	</Dialog>
+</core:FragmentDefinition>

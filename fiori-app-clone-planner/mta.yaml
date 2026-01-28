@@ -1,0 +1,38 @@
+_schema-version: "3.2"
+ID: ext-fiori-clone-planner2
+version: 0.0.1
+provider: SAP
+modules:
+- name: ext-clone-planner2-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: ext-clone-planner2-html5-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - sapb1cloneplanner.zip
+      name: sapb1cloneplanner
+      target-path: resources/
+- name: sapb1cloneplanner
+  type: html5
+  path: clone-planner
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: ext-clone-planner2-html5-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: ext-clone-planner2-html5-app-host-service
+    service-plan: app-host
+parameters:
+  deploy_mode: b1-webclient

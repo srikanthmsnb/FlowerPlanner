@@ -1,0 +1,66 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:barcode="com.9b.clonePlanner2.control">
+	<Dialog id="createClone" contentWidth="30rem" class="sapUiSizeCompact iconDialog waterDialog" stretch="{device>/system/phone}"
+		draggable="true">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>CreateClone}"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<FlexBox direction="Column">
+				<FlexBox direction="Column">
+					<InputListItem label="{i18n>Item}">
+						<ComboBox id="item" width="18rem" items="{path: 'jsonModel>/cloneItemList'}" change="itemSearchCreateclone" forceSelection="false"
+							selectedKey="{jsonModel>/cCloneData/sItem}" busy="{jsonModel>/ComboBoxBusy}">
+							<items>
+								<core:Item key="{jsonModel>ItemCode}-{jsonModel>ProdStdCost}" text="{jsonModel>ItemName}"/>
+							</items>
+						</ComboBox>
+					</InputListItem>
+					<InputListItem label="Source UID">
+						<ComboBox id="sourceTag" width="18rem" items="{path: 'jsonModel>/sourceDataCreateclone'}" forceSelection="false"
+							selectedKey="{jsonModel>/cCloneData/sTag}" busy="{jsonModel>/ComboBoxBusy}">
+							<items>
+								<core:Item key="{jsonModel>BatchNum}" text="{jsonModel>BatchNum} - {jsonModel>ItemName}"/>
+							</items>
+						</ComboBox>
+						<!--<Input id="sourceTag" width="18rem" selectedKey="{jsonModel>/cCloneData/sTag}"  items="{path: 'jsonModel>/data'}"/>-->
+					</InputListItem>
+					<InputListItem label="METRC UID">
+						<Select id="packageTag" width="18rem" forceSelection="false" items="{path: 'jsonModel>/barCodePlantTagData'}"
+							selectedKey="{jsonModel>/cCloneData/pTag}" busy="{jsonModel>/ComboBoxBusy}">
+							<core:Item key="{jsonModel>Label}" text="{jsonModel>Label}"/>
+						</Select>
+					</InputListItem>
+					<InputListItem label="Harvest Name">
+						<Input id="harvestBatch" width="18rem" value="{jsonModel>/cCloneData/hTag}"/>
+					</InputListItem>
+					<InputListItem label="{i18n>Quantity}">
+						<Input id="eQty" width="18rem" type="Number" value="{jsonModel>/cCloneData/sQty}"/>
+					</InputListItem>
+					<InputListItem label="{i18n>Date}">
+						<DatePicker
+							value="{path:'jsonModel>/cCloneData/sDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true, 'pattern': 'MM-dd-yyyy'}}"
+							width="18rem"/>
+					</InputListItem>
+					<InputListItem label="{i18n>Location}">
+						<ComboBox id="location" width="18rem" items="{path: 'jsonModel>/ChangeLocationList' ,sorter : { path : 'BinCode', descending : false }}"
+							busy="{jsonModel>/ComboBoxBusy}" forceSelection="false" selectedKey="{jsonModel>/cCloneData/sLocation}">
+							<items>
+								<core:Item key="{jsonModel>Warehouse}-{jsonModel>AbsEntry}-{jsonModel>BinCode}" text="{jsonModel>BinCode}"/>
+							</items>
+						</ComboBox>
+					</InputListItem>
+				</FlexBox>
+			</FlexBox>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" text="{i18n>Create}" press="onCloneCreate" id="createCloneBtn"/>
+		</beginButton>
+		<endButton>
+			<Button type="Transparent" text="{i18n>Close}" press="onCloneClose" tooltip="Close"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

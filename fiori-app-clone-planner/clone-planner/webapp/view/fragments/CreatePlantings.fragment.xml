@@ -1,0 +1,62 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:barcode="com.9b.clonePlanner2.control">
+	<Dialog class="sapUiSizeCompact" stretch="{device>/system/phone}" draggable="true" busy="{jsonModel>/busyView}">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>CreatePlantings}"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<FlexBox direction="Column">
+				<FlexBox direction="Column">
+					<InputListItem label="Select Package">
+						<SearchField width="19rem" id="createPlantingSearchID" search="onSearchCreateplantingsSource" enableSuggestions="true"
+							suggestionItems="{jsonModel>/packageData}" suggest="onSuggestCreateplantingsSource">
+							<SuggestionItem text="{jsonModel>METRCUID} - {jsonModel>ItemName} - {jsonModel>Quantity} - {jsonModel>CreateDate}"/>
+						</SearchField>
+						<!--<ComboBox width="19rem" items="{path: 'jsonModel>/packageData'}" selectedKey="{jsonModel>/cPlantingsData/sPackage}"-->
+						<!--	busy="{jsonModel>/ComboBoxBusy}" change="onPackageSelect" showSecondaryValues="true" filterFunction="customFiltercreatePlantings" >-->
+						<!--	<items>-->
+						<!--		<core:Item key="{jsonModel>METRCUID}" text="{jsonModel>METRCUID} - {jsonModel>ItemName} - {jsonModel>Quantity} - {jsonModel>CreateDate}"/>-->
+						<!--	</items>-->
+						<!--</ComboBox>-->
+					</InputListItem>
+					<InputListItem label="METRC UID">
+						<Select width="19rem" forceSelection="false" items="{path: 'jsonModel>/barCodePlantTagData'}" selectedKey="{jsonModel>/cPlantingsData/mUID}">
+							<core:Item key="{jsonModel>Label}" text="{jsonModel>Label}"/>
+						</Select>
+					</InputListItem>
+					<InputListItem label="Harvest Name">
+						<Input id="harvestBatch" width="19rem" value="{jsonModel>/cPlantingsData/hTag}"/>
+					</InputListItem>
+					<InputListItem label="{i18n>Quantity}">
+						<Input width="19rem" editable="false" value="{jsonModel>/cPlantingsData/sQty}"/>
+					</InputListItem>
+					<InputListItem label="{i18n>Item}">
+						<Input width="19rem" editable="false" value="{jsonModel>/cPlantingsData/itemName}"/>
+					</InputListItem>
+					<InputListItem label="{i18n>Date}">
+						<DatePicker
+							value="{path:'jsonModel>/cPlantingsData/sDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true, 'pattern': 'MM-dd-yyyy'}}"
+							width="19rem"/>
+					</InputListItem>
+					<InputListItem label="{i18n>Location}">
+						<ComboBox id="location" width="19rem" selectedKey="{jsonModel>/cPlantingsData/toLoc}"
+							items="{path: 'jsonModel>/ChangeLocationList' ,sorter : { path : 'WarehouseName', descending : false }}" busy="{jsonModel>/ComboBoxBusy}">
+							<items>
+								<core:Item key="{jsonModel>Warehouse}-{jsonModel>AbsEntry}-{jsonModel>BinCode}" text="{jsonModel>BinCode}"/>
+							</items>
+						</ComboBox>
+					</InputListItem>
+				</FlexBox>
+			</FlexBox>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" text="{i18n>Create}" press="confirmCreatePlantings" enabled="{jsonModel>/enableCreate}"/>
+		</beginButton>
+		<endButton>
+			<Button type="Transparent" text="{i18n>Close}" press="onCreatePlantsClose" tooltip="Close"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

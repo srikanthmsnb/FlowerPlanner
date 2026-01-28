@@ -1,0 +1,60 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<Dialog id="createSplitClone" class="sapUiSizeCompact iconDialog waterDialog" stretch="{device>/system/phone}" draggable="true" busy="{jsonModel>/busyView}">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>SplitPackage}"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<FlexBox direction="Column">
+				<InputListItem label="METRC UID" width="15rem">
+					<!--<Text width="17rem" text="{jsonModel>/splitPkgObj/BatchNum}"/>-->
+					<Input width="17rem" value="{jsonModel>/splitPkgObj/BatchNum}" editable="false"/>
+				</InputListItem>
+				<InputListItem label="Harvest Name" width="15rem">
+					<!--<Text width="17rem" text="{jsonModel>/splitPkgObj/MnfSerial}"/>-->
+					<Input width="17rem" value="{jsonModel>/splitPkgObj/MnfSerial}" editable="false"/>
+				</InputListItem>
+				<InputListItem label="Source UID" width="15rem">
+					<!--<Text width="17rem" text="{jsonModel>/splitPkgObj/SourceUID}"/>-->
+					<Input width="17rem" value="{jsonModel>/splitPkgObj/SourceUID}" editable="false"/>
+				</InputListItem>
+				<InputListItem label="{i18n>Item}">
+					<ComboBox id="item" width="17rem" items="{path: 'jsonModel>/cloneItemListSplitBatch'}" forceSelection="false" editable="false"
+						selectedKey="{jsonModel>/splitPkgObj/sItem}" busy="{jsonModel>/ComboBoxBusy}">
+						<items>
+							<core:Item key="{jsonModel>ItemCode}-{jsonModel>ProdStdCost}-{jsonModel>InventoryUOM}" text="{jsonModel>ItemName}"/>
+						</items>
+					</ComboBox>
+				</InputListItem>
+				<InputListItem label="{i18n>NewTag}" width="15rem">
+					<Select width="17rem" selectedKey="{jsonModel>/splitPkgObj/newTag}" forceSelection="false" items="{path: 'jsonModel>/barCodePlantTagData'}"
+						busy="{jsonModel>/ComboBoxBusy}">
+						<core:Item key="{jsonModel>Label}" text="{jsonModel>Label}"/>
+					</Select>
+				</InputListItem>
+				<InputListItem label="{i18n>AvailableQuantity}" width="15rem">
+					<!--<Text id="avalQty" width="17rem" text="{jsonModel>/splitPkgObj/Quantity}"/>-->
+					<Input id="avalQty" width="17rem" value="{jsonModel>/splitPkgObj/Quantity}" editable="false"/>
+				</InputListItem>
+				<InputListItem label="{i18n>Location}" width="15rem">
+					<ComboBox selectedKey="{jsonModel>/splitPkgObj/Loc}" width="17rem" id="location" busy="{jsonModel>/ComboBoxBusy}"
+						items="{path: 'jsonModel>/ChangeLocationList', sorter : { path : 'BinCode', descending : false }}" forceSelection="false">
+						<core:Item key="{jsonModel>Warehouse}-{jsonModel>AbsEntry}-{jsonModel>BinCode}" text="{jsonModel>BinCode}"/>
+					</ComboBox>
+				</InputListItem>
+				<InputListItem label="{i18n>Quantity}" width="15rem">
+					<Input width="17rem" liveChange="onChangeQuantitySplit" value="{jsonModel>/splitPkgObj/newQty}"/>
+				</InputListItem>
+			</FlexBox>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" text="{i18n>Create}" press="onCreateSplitPackage" enabled="{jsonModel>/enableSplit}"></Button>
+		</beginButton>
+		<endButton>
+			<Button type="Transparent" text="{i18n>Close}" press="closeSplitPackage"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

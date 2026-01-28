@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Seed & Beyond</title>
+		<link rel="shortcut icon" type="image/png" href="./images/icons/favicon.png"/>
+		
+		<!--data-sap-ui-theme="sap_belize""sap_belize_plus" "sap_fiori_3"-->
+		<script id="sap-ui-bootstrap"
+			src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_horizon"
+			data-sap-ui-resourceroots='{"com.9b.clonePlanner2": "./"}'
+			data-sap-ui-compatVersion="edge"
+			data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+			data-sap-ui-async="true"
+			data-sap-ui-frameOptions="trusted">
+		</script>
+	
+		<script>
+			sap.ui.getCore().attachInit(function() {
+				 new sap.ui.core.ComponentContainer({
+					height : "100%",
+					name : "com.9b.clonePlanner2"
+				}).placeAt("content");
+			});
+		</script>
+	</head>
+	<body class="sapUiBody" id="content" role="application"></body>
+</html>

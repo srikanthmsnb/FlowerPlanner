@@ -1,0 +1,111 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<Dialog horizontalScrolling="false" class="sapUiSizeCompact" stretch="{device>/system/phone}" draggable="true" busy="{jsonModel>/busyView}">
+		<customHeader>
+			<Bar>
+				<contentMiddle justifyContent="Center">
+					<Label text="{i18n>RecordWaste}"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<FlexBox direction="Column">
+				<FlexBox class="sapUiTinyMargin" width="100%" justifyContent="Center">
+					<FlexBox direction="Column">
+						<FlexBox>
+							<FlexBox alignItems="Center" class="sapUiTinyMargin">
+								<Label text="Waste Method" required="false" class="sapUiTinyMarginEnd"/>
+								<ComboBox width="12rem" selectedKey="{jsonModel>/temWasteMethod}" items="{path: 'jsonModel>/WasteMethodsList',templateShareable:'false'}"
+									forceSelection="false">
+									<core:Item key="{jsonModel>Name}" text="{jsonModel>Name}"/>
+								</ComboBox>
+							</FlexBox>
+							<FlexBox alignItems="Center" class="sapUiTinyMargin">
+								<Label text="Material Used" required="false" class="sapUiTinyMarginEnd"/>
+								<Input value="{jsonModel>/temMaterialUsed}" width="12rem"/>
+							</FlexBox>
+							<FlexBox alignItems="Center" class="sapUiTinyMargin">
+								<Label text="Reason" required="false" class="sapUiTinyMarginEnd"/>
+								<ComboBox width="12rem" items="{path: 'jsonModel>/WasteReasonsList'}" selectedKey="{jsonModel>/temReason}" forceSelection="false">
+									<core:Item key="{jsonModel>Name}" text="{jsonModel>Name}"/>
+								</ComboBox>
+							</FlexBox>
+						</FlexBox>
+						<FlexBox>
+							<FlexBox alignItems="Center" class="sapUiTinyMargin">
+								<Label text="{i18n>WasteRecordDate}" required="false" class="sapUiTinyMarginEnd"/>
+								<DatePicker displayFormat="MM-dd-yyyy" required="true"
+									value="{path:'jsonModel>/temDestroyDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true ,'pattern': 'MM-dd-yyyy' }}"/>
+							</FlexBox>
+							<FlexBox alignItems="Center" class="sapUiTinyMargin">
+								<Label text="Notes" required="false" class="sapUiTinyMarginEnd"/>
+								<Input width="18rem" value="{jsonModel>/temNotes}"/>
+							</FlexBox>
+							<FlexBox alignItems="Center">
+								<Button type="Emphasized" text="Apply" press="onRecordWasteTemApply" class="sapUiSmallMarginBeginEnd"/>
+							</FlexBox>
+						</FlexBox>
+					</FlexBox>
+				</FlexBox>
+				<Table items="{ path: 'jsonModel>/recordWasteData'}" width="100%">
+					<columns>
+						<Column width="5%">
+							<Label text="SNO." design="Bold"/>
+						</Column>
+						<Column width="18%">
+							<Label text="METRC UID" design="Bold"/>
+						</Column>
+						<Column width="12%">
+							<Label text="Waste Wgt (lb)" design="Bold" wrapping="true"/>
+						</Column>
+						<Column width="12%">
+							<Label text="Waste Method" design="Bold"/>
+						</Column>
+						<Column width="12%">
+							<Label text="Material Used" design="Bold"/>
+						</Column>
+						<Column width="12%">
+							<Label text="Reason" design="Bold"/>
+						</Column>
+						<Column width="12%">
+							<Label text="{i18n>WasteRecordDate}" design="Bold"/>
+						</Column>
+						<Column width="12%">
+							<Label text="Notes" design="Bold"/>
+						</Column>
+						<Column width="7%">
+							<Label text="" design="Bold"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{jsonModel>SNO}"/>
+								<Text text="{jsonModel>BatchNum}"/>
+								<Input value="{jsonModel>U_NWTWT}" required="true" type="Number" width="100%"/>
+								<ComboBox selectedKey="{jsonModel>U_NWTMT}" items="{path: 'jsonModel>/WasteMethodsList',templateShareable:'false'}" forceSelection="false"
+									width="100%">
+									<core:Item key="{jsonModel>Name}" text="{jsonModel>Name}"/>
+								</ComboBox>
+								<Input value="{jsonModel>U_NMTUS}" width="100%"/>
+								<ComboBox width="100%" selectedKey="{jsonModel>U_NRSON}" items="{path: 'jsonModel>/WasteReasonsList',templateShareable:'false'}"
+									forceSelection="false">
+									<core:Item key="{jsonModel>Name}" text="{jsonModel>Name}"/>
+								</ComboBox>
+								<DatePicker width="100%"
+									value="{path:'jsonModel>U_NCRDT', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true ,'pattern': 'MM-dd-yyyy' }}"/>
+								<Input value="{jsonModel>U_NNOTE}" required="true" width="100%"/>
+								<Button icon="sap-icon://delete" press="onRecordWasteDelete" type="Reject"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</FlexBox>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" text="{i18n>RecordWaste}" press="confirmRecordWaste" enabled="{jsonModel>/enableWaste}"></Button>
+		</beginButton>
+		<endButton>
+			<Button type="Transparent" text="{i18n>Cancel}" press="closeReportWaste" tooltip="Cancel"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

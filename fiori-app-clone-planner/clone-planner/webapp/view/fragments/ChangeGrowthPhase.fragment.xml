@@ -1,0 +1,139 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<Dialog class="sapUiSizeCompact" stretch="{device>/system/phone}" draggable="true" busy="{jsonModel>/busyView}">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>ChangeGrowthPhase}"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<FlexBox direction="Column">
+				<InputListItem label="{jsonModel>/metrcUIDText}">
+					<Input width="20rem" value="{jsonModel>/changeGrowthObj/BatchNum}" editable="false"/>
+					<!--<Text width="20rem" text="{jsonModel>/changeGrowthObj/BatchNum}"/>-->
+				</InputListItem>
+				<InputListItem label="Harvest Name">
+					<!--<Text width="20rem" text="{jsonModel>/changeGrowthObj/harvestBatchName}"/>-->
+					<Input width="20rem" value="{jsonModel>/changeGrowthObj/harvestBatchName}" editable="false"/>
+				</InputListItem>
+				<InputListItem label="Source UID">
+					<!--<Text width="20rem" text="{jsonModel>/changeGrowthObj/SourceUID}"/>-->
+					<Input width="20rem" value="{jsonModel>/changeGrowthObj/SourceUID}" editable="false"/>
+				</InputListItem>
+				<InputListItem label="{i18n>AvailableQty}">
+					<!--<Text width="20rem" text="{jsonModel>/changeGrowthObj/Quantity}"/>-->
+					<Input width="20rem" value="{jsonModel>/changeGrowthObj/Quantity}" editable="false"/>
+				</InputListItem>
+				<InputListItem label="{i18n>GrowthPhase}">
+					<Select id="growthPhase" width="20rem" selectedKey="{jsonModel>/gPhase}" forceSelection="false" change="onSelectPhaseType" editable="false">
+						<core:Item key="Sticking" text="Sticking"/>
+						<core:Item key="Vegetative" text="Vegetative"/>
+						<core:Item key="Flowering" text="Flowering"/>
+					</Select>
+				</InputListItem>
+				<InputListItem label="{i18n>Item}">
+					<ComboBox id="item" width="20rem" items="{path: 'jsonModel>/changeGrowthItemList'}" busy="{jsonModel>/ComboBoxBusy}" editable="false">
+						<items>
+							<core:Item key="{jsonModel>ItemCode}-{jsonModel>ProdStdCost}" text="{jsonModel>ItemName}"/>
+						</items>
+					</ComboBox>
+				</InputListItem>
+				<InputListItem label="Quantity">
+					<Input id="newQtyForEntry" width="20rem" liveChange="newQuantityForEntry" type="Number" valueState="{jsonModel>/valueStateChangeGrowth}"
+							valueStateText="{jsonModel>/valueStateTextChangeGrowth}" />
+				</InputListItem>
+				
+				
+				<InputListItem label="Plant Tag" visible="{jsonModel>/growthPhaseStickvisible}">
+					<Select id="stickGrowthTag" width="20rem" forceSelection="false" items="{path: 'jsonModel>/barCodePlantTagData'}" change="onStickPlantTagChange"
+						busy="{jsonModel>/ComboBoxBusy}">
+						<core:Item key="{jsonModel>Label}" text="{jsonModel>Label}"/>
+					</Select>
+				</InputListItem>
+				
+				
+				<InputListItem label="{i18n>SelectLocation}">
+					<ComboBox id="location" width="20rem" items="{path: 'jsonModel>/ChangeLocationList', sorter : { path : 'BinCode', descending : false }}"
+						busy="{jsonModel>/ComboBoxBusy}">
+						<core:Item key="{jsonModel>Warehouse}-{jsonModel>AbsEntry}-{jsonModel>BinCode}" text="{jsonModel>BinCode}"/>
+					</ComboBox>
+				</InputListItem>
+				<!--<InputListItem label="{i18n>Labor}">-->
+				<!--	<Input id="laborSt" width="20rem"/>-->
+				<!--</InputListItem>-->
+				<!--<InputListItem label="{i18n>Labor}" visible="{= ${jsonModel>/gPhase} === 'Sticking'}">-->
+				<!--	<Input id="laborSt" width="20rem" liveChange="onChangeWetWeightDestroy"/>-->
+				<!--</InputListItem>-->
+	
+				<InputListItem label="Plugs" visible="{= ${jsonModel>/gPhase} === 'Sticking'}">
+					<ComboBox id="itemSticking" width="20rem" items="{path: 'jsonModel>/changeGrowthItemListCutting'}" 
+					busy="{jsonModel>/ComboBoxBusy}" change="onPlugsChange">
+						<items>
+							<core:Item key="{jsonModel>ItemCode}" text="{jsonModel>ItemName}"/>
+						</items>
+					</ComboBox>
+				</InputListItem>
+				
+				<InputListItem label="Available Plugs Qty" visible="{= ${jsonModel>/gPhase} === 'Sticking'}">
+					<!--<Text width="20rem" text="{jsonModel>/changeGrowthObj/Quantity}"/>-->
+					<Input width="20rem" value="{jsonModel>/plugsAvalQTY}" editable="false"/>
+				</InputListItem>
+				
+				<InputListItem label="{i18n>Plugs}" visible="{= ${jsonModel>/gPhase} === 'Sticking'}">
+					<Input id="plugsSt" width="20rem" type="Number" liveChange="onChangeQtyPlugs"  valueState="{jsonModel>/valueStateplugsSt}"
+							valueStateText="{jsonModel>/valueStateTextplugsSt}"/>
+				</InputListItem>
+				<!--<InputListItem label="{i18n>Labor}" visible="{= ${jsonModel>/gPhase} === 'Vegetative'}">-->
+				<!--	<Input id="laborVeg" width="20rem" liveChange="onChangeWetWeightDestroy"/>-->
+				<!--</InputListItem>-->
+				
+				
+
+				<InputListItem label="Blocks" visible="{= ${jsonModel>/gPhase} === 'Vegetative'}">
+					<ComboBox id="itemCutting" width="20rem" items="{path: 'jsonModel>/changeGrowthItemListSticking'}" 
+					busy="{jsonModel>/ComboBoxBusy}" change="onPlugsChange">
+						<items>
+							<core:Item key="{jsonModel>ItemCode}" text="{jsonModel>ItemName}"/>
+						</items>
+					</ComboBox>
+				</InputListItem>
+	
+				
+				<InputListItem label="Available Blocks Qty" visible="{= ${jsonModel>/gPhase} === 'Vegetative'}">
+					<!--<Text width="20rem" text="{jsonModel>/changeGrowthObj/Quantity}"/>-->
+					<Input width="20rem" value="{jsonModel>/plugsAvalQTY}" editable="false"/>
+				</InputListItem>
+				
+				
+				<InputListItem label="{i18n>Blocks}" visible="{= ${jsonModel>/gPhase} === 'Vegetative'}">
+					<Input id="plugsVeg" width="20rem" type="Number" liveChange="onChangeQtyPlugs" valueState="{jsonModel>/valueStateplugsVeg}"
+							valueStateText="{jsonModel>/valueStateTextplugsVeg}"/>
+				</InputListItem>
+
+				<!--<InputListItem label="{i18n>Labor}" visible="{= ${jsonModel>/gPhase} === 'Flowering'}">-->
+				<!--	<Input id="laborFlow" width="20rem" liveChange="onChangeWetWeightDestroy"/>-->
+				<!--</InputListItem>-->
+				<InputListItem label="{i18n>BeginningTag}" id="begTag" visible="{jsonModel>/beggingTag}">
+					<Select id="beggingTag" width="20rem" forceSelection="false" items="{path: 'jsonModel>/barCodePlantTagData'}" change="onBeginTagChange"
+						busy="{jsonModel>/ComboBoxBusy}">
+						<core:Item key="{jsonModel>Label}" text="{jsonModel>Label}"/>
+					</Select>
+				</InputListItem>
+				<!--<InputListItem label="{i18n>BeginningTag}" id="begTag">-->
+				<!--	<Input id="beggingTag" enabled="true" width="15rem" liveChange="onBeginTagChange"/>-->
+				<!--</InputListItem>-->
+				<InputListItem label="{i18n>EndingTag}" id="endTagField" visible="{jsonModel>/beggingTag}">
+					<Input id="endTag" editable="false" width="20rem"/>
+				</InputListItem>
+			</FlexBox>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" text="Ok" press="onConfirmChangeGrowthPhase" enabled="{jsonModel>/enableOk}"/> 
+			<!--<Button type="Emphasized" text="Ok" press="onChangegrowthphaseCreateplantings" enabled="{jsonModel>/enableOk}"/> -->
+		</beginButton>
+		<endButton>
+			<Button type="Transparent" text="{i18n>Cancel}" press="onChangeGrowthPhaseClose"></Button>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

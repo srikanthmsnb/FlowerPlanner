@@ -1,0 +1,103 @@
+<!--<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">-->
+<!--	<Dialog class="sapUiSizeCompact" stretch="{device>/system/phone}" title="Receive Clones" contentWidth="100%">-->
+<!--		<content>-->
+<!--			<Table id="cloneTable" inset="false" items="{ path: 'jsonModel>/receiveCloneData'}" class="sapUiTinyMargin" width="auto" fixedLayout="false"-->
+<!--				mode="SingleSelectLeft">-->
+<!--				<columns>-->
+<!--					<Column width="20%">-->
+<!--						<Label text="Batch Number" design="Bold"/>-->
+<!--					</Column>-->
+<!--					<Column width="10%">-->
+<!--						<Label text="Item Code" design="Bold"/>-->
+<!--					</Column>-->
+<!--					<Column width="20%">-->
+<!--						<Label text="Item Name" design="Bold"/>-->
+<!--					</Column>-->
+<!--					<Column width="20%">-->
+<!--						<Label text="From Location" design="Bold"/>-->
+<!--					</Column>-->
+<!--					<Column width="20%">-->
+<!--						<Label text="To Location" design="Bold"/>-->
+<!--					</Column>-->
+<!--					<Column width="10%">-->
+<!--						<Label text="Quantity" design="Bold"/>-->
+<!--					</Column>-->
+<!--				</columns>-->
+<!--				<items>-->
+<!--					<ColumnListItem>-->
+<!--						<cells>-->
+<!--							<Text text="{jsonModel>BatchNum}"/>-->
+<!--							<Text text="{jsonModel>ItemCode}"/>-->
+<!--							<Text text="{jsonModel>ItemName}"/>-->
+<!--							<Text text="{jsonModel>WhsCode} {jsonModel>WhsName}"/>-->
+<!--							<Select selectedKey="{jsonModel>toLoc}" items="{path: 'jsonModel>/ChangeLocationList', sorter : { path : 'WarehouseName', descending : false }}" forceSelection="false">-->
+<!--								<core:Item key="{jsonModel>WarehouseCode}" text="{jsonModel>WarehouseName}"/>-->
+<!--							</Select>-->
+<!--							<Text text="{jsonModel>Quantity}"/>-->
+<!--						</cells>-->
+<!--					</ColumnListItem>-->
+<!--				</items>-->
+<!--			</Table>-->
+<!--		</content>-->
+<!--		<beginButton><Button type="Emphasized" text="Add" press="createReceiveClones"/></beginButton>-->
+<!--		<endButton>-->
+<!--			<Button type="Transparent" text="{i18n>Cancel}" press="cancelReceiveClone"></Button>-->
+<!--		</endButton>-->
+<!--	</Dialog>-->
+<!--</core:FragmentDefinition>-->
+
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:barcode="com.9b.clonePlanner2.control">
+	<Dialog id="createClone" contentWidth="28rem" class="sapUiSizeCompact iconDialog waterDialog" stretch="{device>/system/phone}" draggable="true">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="Receive Clones"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<FlexBox direction="Column">
+				<FlexBox direction="Column">
+					<InputListItem label="METRC UID">
+						<Input id="packageTag" width="15rem" value="{jsonModel>/rCloneData/pTag}"/>
+					</InputListItem>
+					<InputListItem label="Source UID">
+						<Input id="sourceTag" width="15rem" value="{jsonModel>/rCloneData/sTag}"/>
+					</InputListItem>
+					<InputListItem label="Harvest Name">
+						<Input id="harvestBatch" width="15rem" value="{jsonModel>/rCloneData/hTag}"/>
+					</InputListItem>
+					<InputListItem label="{i18n>Quantity}">
+						<Input id="eQty" width="15rem" liveChange="onChangeQuantity" value="{jsonModel>/rCloneData/sQty}"/>
+					</InputListItem>
+					<InputListItem label="{i18n>Item}">
+						<Select id="item" width="15rem" items="{path: 'jsonModel>/itemReceiveList'}" forceSelection="false" selectedKey="{jsonModel>/rCloneData/sItem}">
+							<items>
+								<core:Item key="{jsonModel>ItemCode}" text="{jsonModel>ItemName}"/>
+							</items>
+						</Select>
+					</InputListItem>
+					<InputListItem label="{i18n>Date}">
+						<DatePicker
+							value="{path:'jsonModel>/rCloneData/sDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true, 'pattern': 'MM-dd-yyyy'}}"
+							width="15rem"/>
+					</InputListItem>
+					<InputListItem label="{i18n>Location}">
+						<Select id="location" width="15rem" items="{path: 'jsonModel>/ChangeLocationList' ,sorter : { path : 'WarehouseName', descending : false }}"
+							forceSelection="false" selectedKey="{jsonModel>/rCloneData/sLocation}">
+							<items>
+								<core:Item key="{jsonModel>WarehouseCode}" text="{jsonModel>WarehouseName}"/>
+							</items>
+						</Select>
+					</InputListItem>
+				</FlexBox>
+			</FlexBox>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" text="{i18n>Create}" press="createReceiveClones"/>
+		</beginButton>
+		<endButton>
+			<Button type="Transparent" text="{i18n>Close}" press="cancelReceiveClone" tooltip="Close"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

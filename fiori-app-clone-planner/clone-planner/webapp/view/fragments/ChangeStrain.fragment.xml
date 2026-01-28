@@ -1,0 +1,55 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<Dialog id="changeItemMETRC" contentWidth="70%" class="sapUiSizeCompact" stretch="{device>/system/phone}" draggable="true"
+		title="Change Strains">
+		<content>
+			<Table width="auto" id="changeItemMETRCTable" inset="false" mode="None" items="{ path: 'jsonModel>/changeItemsData'}" class="sapUiTinyMargin"
+				fixedLayout="false">
+				<columns>
+					<Column width="20%">
+						<Label text="METRC UID" design="Bold"/>
+					</Column>
+					<Column width="30%">
+						<Label text="Strain" design="Bold"/>
+					</Column>
+					<Column width="40%">
+						<Label text="New Strain" design="Bold"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{jsonModel>BatchNum}"/>
+							<Text text="{jsonModel>StrainName}"/>
+							<Input id="productInputMETRC" placeholder="Enter Item" showSuggestion="true" 
+								valueStateText="{jsonModel>ITEMTXT}" valueState="{jsonModel>STATUSITEM}" liveChange="validateItem" showTableSuggestionValueHelp="false"
+								suggestionRows="{/changeItemsdropdownData}" suggestionItemSelected="onSuggestionItemSelected">
+								<suggestionColumns>
+									<Column>
+										<Label text="Strain Name"/>
+									</Column>
+									<!--<Column>-->
+									<!--	<Label text="Item Code"/>-->
+									<!--</Column>-->
+								</suggestionColumns>
+								<suggestionRows>
+									<ColumnListItem>
+										<Text text="{Name}" wrapping="true" textAlign = "Initial"/>
+										<!--<Text text="{ItemCode}" wrapping="true"/>-->
+									</ColumnListItem>
+								</suggestionRows>
+							</Input>
+							<!--<Input value="{jsonModel>newItemName}" liveChange="validateItem" showValueHelp="true" placeholder="Enter Item" valueState="{jsonModel>STATUSITEM}"-->
+							<!--	valueStateText="{jsonModel>ITEMTXT}" valueHelpRequest="valueHelpRequestDialog"></Input>-->
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" text="{i18n>Update}" press="onMETRCConfirmChangeItem"></Button>
+		</beginButton>
+		<endButton>
+			<Button type="Transparent" text="{i18n>Cancel}" press="onChangeItemCloseMETRC"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

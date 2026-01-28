@@ -1,0 +1,84 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<Dialog class="sapUiSizeCompact iconDialog waterDialog" stretch="{device>/system/phone}" draggable="true">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="Adjust Quantity"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<VBox>
+				<FlexBox class="sapUiSmallMargin" width="95%" justifyContent="Center">
+					<FlexBox alignItems="Center">
+						<Text text="Reason" class="sapUiSmallMarginBeginEnd"/>
+						<ComboBox id="reasonapply" selectedKey="{jsonModel>/temREASON}" items="{jsonModel>/metrcReasons}" busy="{jsonModel>/mComboBoxBusy}">
+							<core:Item key="{jsonModel>Name}" text="{jsonModel>Name}"/>
+						</ComboBox>
+					</FlexBox>
+					<FlexBox alignItems="Center">
+						<Text text="Notes" class="sapUiSmallMarginBeginEnd"/>
+						<Input id="notesapply" value="{jsonModel>/temNOTES}"/>
+					</FlexBox>
+					<FlexBox alignItems="Center">
+						<Button type="Emphasized" text="Apply" press="onAdjustTemApply" class="sapUiSmallMarginBeginEnd"/>
+					</FlexBox>
+				</FlexBox>
+				<Table inset="false" items="{ path: 'jsonModel>/batches' }">
+					<columns>
+						<Column width="12%">
+							<Label text="SNO." design="Bold"/>
+						</Column>
+						<Column width="50%">
+							<Text text="{i18n>PackageTag}"/>
+						</Column>
+						<!--<Column width="50%">-->
+						<!--	<Text text="{i18n>HarvestBatch}"/>-->
+						<!--</Column>-->
+						<Column width="25%">
+							<Text text="Qty"/>
+						</Column>
+						<Column width="25%">
+							<Text text="Adj. Qty"/>
+						</Column>
+						<Column width="25%">
+							<Text text="New Qty"/>
+						</Column>
+						<Column width="25%">
+							<Text text="{i18n>Reason}"/>
+						</Column>
+						<Column width="25%">
+							<Text text="{i18n>Notes}"/>
+						</Column>
+						<Column width="12%">
+							<Label text="" design="Bold"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{jsonModel>SNO}"/>
+								<Text text="{jsonModel>BatchNum}"/>
+								<Text text="{jsonModel>Quantity}"/>
+								<Input value="{jsonModel>AQTY}" type="Number" change="adjustQuantity"/>
+								<Text text="{jsonModel>NEWQTY}"/>
+								<!--<Input value="{jsonModel>reason}"/>-->
+								<ComboBox selectedKey="{jsonModel>REASON}" items="{jsonModel>/metrcReasons}" busy="{jsonModel>/mComboBoxBusy}">
+									<core:Item key="{jsonModel>Name}" text="{jsonModel>Name}"/>
+								</ComboBox>
+								<Input value="{jsonModel>NOTES}"/>
+								<Button icon="sap-icon://delete" press="onAdjustDelete" type="Reject"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</VBox>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" text="Adjust" press="onConfirmAdjust"></Button>
+		</beginButton>
+		<endButton>
+			<Button type="Transparent" text="{i18n>Cancel}" press="onAdjustClose"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

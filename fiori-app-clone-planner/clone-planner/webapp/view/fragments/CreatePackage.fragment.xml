@@ -1,0 +1,45 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<Dialog id="changeGrowthPhase" class="sapUiSizeCompact iconDialog waterDialog" stretch="{device>/system/phone}" draggable="true"
+		busy="{jsonModel>/busyView}">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="Create Package"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<FlexBox direction="Column">
+				<InputListItem label="METRC UID">
+					<Input id="strain" editable="false" width="17rem"/>
+				</InputListItem>
+				<InputListItem label="Harvest Name">
+					<Input id="harvestBatch" editable="false" width="17rem"/>
+				</InputListItem>
+				<InputListItem label="Source UID">
+					<Input id="parentTag" editable="false" width="17rem"/>
+				</InputListItem>
+				<InputListItem label="Item">
+					<Input id="item" editable="false" width="17rem"/>
+				</InputListItem>
+				<InputListItem label="Location">
+					<ComboBox id="location" width="17rem" items="{path: 'jsonModel>/ChangeLocationList' ,sorter : { path : 'BinCode', descending : false }}"
+						busy="{jsonModel>/ComboBoxBusy}">
+						<core:Item key="{jsonModel>Warehouse}-{jsonModel>AbsEntry}-{jsonModel>BinCode}" text="{jsonModel>BinCode}"/>
+					</ComboBox>
+				</InputListItem>
+				<InputListItem label="Package Tag">
+					<Select id="pTag" width="17rem" forceSelection="false" items="{path: 'jsonModel>/packageTagData'}" busy="{jsonModel>/ComboBoxBusy}">
+						<core:Item key="{jsonModel>Label}" text="{jsonModel>Label}"/>
+					</Select>
+				</InputListItem>
+			</FlexBox>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" text="{i18n>Ok}" press="confirmCreatePackage" enabled="{jsonModel>/enablePackage}"></Button>
+		</beginButton>
+		<endButton>
+			<Button type="Transparent" text="{i18n>Cancel}" press="onCreatePackageClose"></Button>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

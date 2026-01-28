@@ -1,0 +1,207 @@
+<mvc:View controllerName="com.9b.clonePlanner2.controller.ClonePlanner" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:microchart="sap.suite.ui.microchart" xmlns:table="sap.ui.table"
+	xmlns:barcode="com.9b.clonePlanner2.control" xmlns:grid="sap.ui.layout.cssgrid" xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:commons="sap.suite.ui.commons"
+	xmlns:tnt="sap.tnt" busy="{jsonModel>/busyView}">
+	<f:DynamicPage id="dynamicPageId" showFooter="true" class="dyPage custFDynamicPageTitle" xmlns:l="sap.ui.layout">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:content>
+					<FlexBox direction="Row" justifyContent="SpaceAround" alignItems="Center">
+						<Text text="{i18n>Navigateto} " width="5rem"></Text>
+						<Select id="navigate" width="14rem" change="onChanageNavigate" forceSelection="false">
+							<!--<core:Item key="Strain" text="{i18n>Strain}"/>-->
+							<!--<core:Item key="VegPlanner" text="{i18n>VegPlanner}"/>-->
+							<core:Item key="FlowerPlanner" text="{i18n>FlowerPlanner}"/>
+							<core:Item key="Harvest" text="{i18n>Harvest}"/>
+							<core:Item key="ManagePackages" text="{i18n>ManagePackages}"/>
+							<core:Item key="MotherPlanner" text="{i18n>MotherPlanner}"/>
+							<core:Item key="DestroyedPlants" text="{i18n>DestroyedPlants}"/>
+							<core:Item key="Waste" text="{i18n>RecordWaste}"/>
+						</Select>
+					</FlexBox>
+				</f:content>
+				<f:actions>
+					<Title text="{i18n>Location}"></Title>
+					<!--	<ComboBox busy="{jsonModel>/licBusy}" id="license" width="18rem" change="onChanageLicenseType" items="{jsonModel>/licenseList}"
+						selectedKey="{jsonModel>/selectedLocation}">
+						<core:Item key="{jsonModel>U_MetrcLocation}" text="{jsonModel>BinCode} - {jsonModel>U_MetrcLicense}"/>
+					</ComboBox>-->
+					<SearchField width="18rem" id="locDropDown" search="onSearchLicense" enableSuggestions="true" suggestionItems="{jsonModel>/licenseList}"
+						suggest="onSuggestLocation" value="{jsonModel>/selectedLocationDesc}">
+						<SuggestionItem text="{jsonModel>BinCode} - {jsonModel>U_MetrcLicense}"/>
+					</SearchField>
+					<Button icon="sap-icon://refresh" press="onPlantsRefresh" type="Default"/>
+					<!--<Button text="{i18n>SOPTutorial}" press="onPressTutorial" type="Default"/>-->
+				</f:actions>
+				<f:navigationActions>
+					<tnt:InfoLabel class="metrcItem" text="{jsonModel>/METRCText}" colorScheme="{jsonModel>/METRCColorCode}" visible="{jsonModel>/MetrcOnOff}"/>
+					<tnt:InfoLabel class="metrcItem" text="{jsonModel>/METRCKey}" colorScheme="{jsonModel>/METRCColorKey}" visible="{jsonModel>/MetrcOnOff}"/>
+					<Button text="{jsonModel>/refreshText}" type="Transparent" enabled="false" class="lastUpdate" width="13rem"/>
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<l:VerticalLayout width="100%">
+					<l:Grid containerQuery="true">
+						<VBox class="sapUiSmallMarginTop" height="100%">
+							<VBox class="sapUiSmallMarginTop" alignItems="Center" justifyContent="Center" height="100%">
+								<Text id="clonePlantCount" class="plantCountText"/>
+								<Text text="{i18n>Plants}" wrapping="true" class="noOfPlantCount"/>
+							</VBox>
+						</VBox>
+						<VBox height="8rem">
+							<commons:ChartContainer autoAdjustHeight="true" class="chartBar" showFullScreen="true" showZoom="false" showLegendButton="false"
+								title="{i18n>NoofPlantsbyItem}">
+								<commons:content>
+									<commons:ChartContainerContent icon="sap-icon://vertical-bar-chart">
+										<commons:content>
+											<viz:VizFrame renderComplete="renderComplete" id="idVizFrame1" uiConfig="{applicationSet:'fiori'}" width="100%" vizType="column"
+												vizProperties="{plotArea:{colorPalette:['#008000'],dataLabel:{visible:true}},categoryAxis:{title:{visible:'false'}},valueAxis:{title:{visible:'false'}},title:{visible:'false'}}"
+												height="8rem" selectData="onSelectStrainChart" deselectData="onSelectStrainChart">
+												<viz:dataset>
+													<viz.data:FlattenedDataset data="{/}">
+														<viz.data:dimensions>
+															<viz.data:DimensionDefinition name="Strain" value="{LABEL}"/>
+														</viz.data:dimensions>
+														<viz.data:measures>
+															<viz.data:MeasureDefinition name="{i18n>Count}" value="{COUNT}"/>
+														</viz.data:measures>
+													</viz.data:FlattenedDataset>
+												</viz:dataset>
+												<viz:feeds>
+													<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Count"/>
+													<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Strain"/>
+												</viz:feeds>
+											</viz:VizFrame>
+										</commons:content>
+									</commons:ChartContainerContent>
+								</commons:content>
+							</commons:ChartContainer>
+						</VBox>
+					</l:Grid>
+				</l:VerticalLayout>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox height="100%">
+				<VBox height="100%" class="fullHeight" width="100%">
+					<table:Table class="uiTableTable" id="clonePlannerTable" selectionMode="MultiToggle" rowSelectionChange="handleRowSelection"
+						cellClick="cellClick" visibleRowCountMode="Auto" rows="{path:'jsonModel>/cloneTableData'}" customFilter="onFilterTable">
+						<table:extension>
+							<OverflowToolbar>
+								<Text class="tableTitle" id="tableHeader" text="{i18n>Batches}"/>
+								<ToolbarSpacer/>
+								<MultiInput width="25rem" placeholder="Search" tokenUpdate="tokenUpdateMultiInput" submit="onSubmitMultiInput" showValueHelp="false"
+									liveChange="onChangeMultiInput" id="searchFieldTable" enableMultiLineMode="true"/>
+								<Button text="{i18n>ClearAllFilters}" press="clearAllFilters"/>
+								<Text class="sapMTBSeparator"/>
+								<Button text="{i18n>ReceiveClones}" press="receiveClones" type="Default" visible="{jsonModel>/recClone}"/>
+								<!--<Button text="{i18n>CreateClone}" press="handlecreateClone" type="Default"/>-->
+								<Button text="{i18n>CreatePlantings}" press="handleCreatePlantings" type="Default"/>
+								<!--<Button text="{i18n>CreatePlantingsfromPackages}" press="handleCreatePlantingsFromPackage" type="Default"/>-->
+								<Button text="Mark as Mother" press="handlemarkasMother" type="Default"/>
+								<Button text="Edit Harvest Name" press="handleEditHarvestName" type="Default"/>
+								<Button text="Edit Lot Number" press="handleEditLotNumber" type="Default"/>
+								<Button text="{i18n>ChangeLocation}" press="handlechangeLocation" type="Default"/>
+								<Button type="Default" press="handlechangeItemsMETRC" text="Change Strain" enabled="{jsonModel>/changeStrainsSelect}"/>
+								<Button text="{i18n>ChangeGrowthPhase}" press="handlechangeGrowthPhase" type="Default" enabled="{jsonModel>/isSingleSelect}"/>
+								<Button text="{i18n>SplitPackage}" press="handleCreateSplitPackage" type="Default" enabled="{jsonModel>/isSingleSelect}"/>
+								<!--<Button text="{i18n>PrintLabel}" press="handlePrintLabel" type="Default" id="printId"/>-->
+								<Button text="Create Package" press="handleCreatePackage" type="Default" enabled="{jsonModel>/isSingleSelect}"/>
+								<Button text="{i18n>DestroyPlants}" type="Reject" press="performDestroyPlants"></Button>
+								<Button text="{i18n>RecordWaste}" type="Reject" press="handleonRecordWaste" enabled="false" />
+								<Button type="Ghost" press="handleAdjust" text="{i18n>Adjust}" enabled="{jsonModel>/changeItemTypeSelect}"/>
+								<!--<Button type="Accept" press="handleFinish" text="{i18n>Finish}" enabled="{jsonModel>/changeItemTypeSelect}"/>-->
+							</OverflowToolbar>
+							<OverflowToolbar visible="false" id="searchFieldTable2" active="true" design="Info" height="2rem" press="onToolbarPress"
+								ariaLabelledBy="myText">
+								<Text text="{i18n>FilteredBy} : "/>
+								<Text id="searchFieldTable1" text="{i18n>Thereshouldbenointeractiveelementsinthetoolbar}"/>
+								<ToolbarSpacer/>
+								<core:Icon press="onCloseRefreshChart" src="sap-icon://undo" width="2rem"/>
+							</OverflowToolbar>
+						</table:extension>
+						<table:columns>
+							<table:Column sortProperty="BatchNum" filterProperty="BatchNum" tooltip="METRC UID">
+								<Label text="METRC UID" design="Bold"/>
+								<table:template>
+									<Text text="{jsonModel>BatchNum}" wrapping="true"/>
+								</table:template>
+							</table:Column>
+							<table:Column id="strain" sortProperty="ItemName" filterProperty="ItemName" tooltip="{i18n>Item}">
+								<Label text="{i18n>Item}" design="Bold"/>
+								<table:template>
+									<Text text="{jsonModel>ItemName}" wrapping="true"/>
+								</table:template>
+							</table:Column>
+							<table:Column id="cloneid" sortProperty="SourceUID" filterProperty="SourceUID" tooltip="Source UID">
+								<Label text="Source UID" design="Bold"/>
+								<table:template>
+									<Text text="{jsonModel>SourceUID}" wrapping="true"/>
+								</table:template>
+							</table:Column>
+							<table:Column id="lotNum" sortProperty="U_LotNumber" filterProperty="U_LotNumber" tooltip="Lot Number">
+								<Label text="Lot Number" design="Bold"/>
+								<table:template>
+									<Text text="{jsonModel>U_LotNumber}" wrapping="true"/>
+								</table:template>
+							</table:Column>
+							<table:Column id="harvestid" sortProperty="MnfSerial" filterProperty="MnfSerial" tooltip="Harvest Name">
+								<Label text="Harvest Name" design="Bold"/>
+								<table:template>
+									<Text text="{jsonModel>MnfSerial}" wrapping="true"/>
+								</table:template>
+							</table:Column>
+							<!--	<table:Column id="croom" sortProperty="BinLocationName" filterProperty="BinLocationName" tooltip="Location" width="15%">
+								<Label text="{i18n>Location}" design="Bold"/>
+								<table:template>
+									<Text text="{jsonModel>BinLocationName}" wrapping="true"/>
+								</table:template>
+							</table:Column>-->
+							<table:Column id="createddate" sortProperty="CreateDate" filterProperty="CreateDate" tooltip="Clone Start Date">
+								<Label text="{i18n>CloneStartDate}" design="Bold"/>
+								<table:template>
+									<Text text="{path:'jsonModel>CreateDate',formatter:'.formatter.dateDisplay'}" wrapping="true"/>
+								</table:template>
+							</table:Column>
+							<!--<table:Column id="propagationdate" sortProperty="U_NPDP" filterProperty="U_NPDP" tooltip="Clone Transplant Date" width="14%">-->
+							<!--	<Label text="{i18n>CloneTransplantDate}" design="Bold"/>-->
+							<!--	<table:template>-->
+							<!--		<Text text="{path:'jsonModel>U_NPDP',formatter:'.formatter.dateDisplay'}" wrapping="true"/>-->
+							<!--	</table:template>-->
+							<!--</table:Column>-->
+							<table:Column id="aqty" sortProperty="Quantity" filterProperty="Quantity" defaultFilterOperator="EQ" filterType="sap.ui.model.type.Number">
+								<Label text="{i18n>AvailableQuantity}" design="Bold">
+									<customData>
+										<core:CustomData key="DAYS"/>
+									</customData>
+								</Label>
+								<table:template>
+									<Text text="{jsonModel>Quantity}" wrapping="true"/>
+								</table:template>
+							</table:Column>
+							<!--<table:Column id="aqty" sortProperty="Quantity" filterProperty="Quantity">-->
+							<!--	<Label text="{i18n>AvailableQuantity}" design="Bold"/>-->
+							<!--	<table:template>-->
+							<!--		<Text text="{jsonModel>Quantity}" wrapping="true"/>-->
+							<!--	</table:template>-->
+							<!--</table:Column>-->
+						</table:columns>
+					</table:Table>
+				</VBox>
+			</VBox>
+		</f:content>
+		<f:footer>
+			<Bar>
+				<contentLeft>
+					<Button id="resPop" icon="sap-icon://information" press="handleOpenPopOver" ariaHasPopup="Dialog"/>
+				</contentLeft>
+				<contentRight>
+					<Text text="{jsonModel>/versionInfo}"/>
+				</contentRight>
+			</Bar>
+		</f:footer>
+	</f:DynamicPage>
+</mvc:View>

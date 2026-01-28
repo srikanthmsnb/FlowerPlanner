@@ -1,0 +1,62 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<Dialog contentWidth="50%" class="sapUiSizeCompact" stretch="{device>/system/phone}" draggable="true" busy="{jsonModel>/busyView}">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="Change Location"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<VBox>
+				<FlexBox class="sapUiSmallMargin" width="95%" justifyContent="Center">
+					<FlexBox alignItems="Center">
+						<Text text="Location" class="sapUiSmallMarginBeginEnd"/>
+						<ComboBox id="temLocationId" selectedKey="{jsonModel>/temChangeLoc}" width="100%" items="{jsonModel>/ChangeLocationList}"
+							busy="{jsonModel>/ComboBoxBusy}">
+							<core:Item key="{jsonModel>Warehouse}-{jsonModel>AbsEntry}-{jsonModel>BinCode}" text="{jsonModel>BinCode}"/>
+						</ComboBox>
+					</FlexBox>
+					<FlexBox alignItems="Center">
+						<Button type="Emphasized" text="Apply" press="onChangeLocTemApply" class="sapUiSmallMarginBeginEnd"/>
+					</FlexBox>
+				</FlexBox>
+				<Table inset="false" items="{ path: 'jsonModel>/changeLocData'}" width="100%">
+					<columns>
+						<Column width="12%">
+							<Label text="SNO." design="Bold"/>
+						</Column>
+						<Column width="40%">
+							<Label text="METRC UID" design="Bold"/>
+						</Column>
+						<Column width="60%">
+							<Label text="Select Location" design="Bold"/>
+						</Column>
+						<Column width="12%">
+							<Label text="" design="Bold"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{jsonModel>SNO}"/>
+								<Text text="{jsonModel>BatchNum}"/>
+								<ComboBox selectedKey="{jsonModel>U_NLOCD_TO}" width="100%"
+									items="{path: 'jsonModel>/ChangeLocationList' ,sorter : { path : 'BinCode', descending : false }}" busy="{jsonModel>/ComboBoxBusy}">
+									<core:Item key="{jsonModel>Warehouse}-{jsonModel>AbsEntry}-{jsonModel>BinCode}" text="{jsonModel>BinCode}"/>
+								</ComboBox>
+								<Button icon="sap-icon://delete" press="onLocationDelete" type="Reject"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</VBox>
+		</content>
+		<beginButton>
+			<Button type="Emphasized" text="Change Location" press="onChangeLocation" enabled="{jsonModel>/enableChange}"></Button>
+		</beginButton>
+		<endButton>
+			<Button type="Transparent" text="{i18n>Cancel}" press="onCloseChangeLocation"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>
