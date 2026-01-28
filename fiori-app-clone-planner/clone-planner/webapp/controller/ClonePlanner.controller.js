@@ -17,6 +17,7 @@ sap.ui.define([
 					// A case-insensitive "string contains" style filter
 					return oItem.getText().match(new RegExp(sTerm, "i"));
 					testing intial
+					test
 				});*/
 
 			if (!this._busyDialog) {
