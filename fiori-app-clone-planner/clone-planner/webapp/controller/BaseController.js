@@ -80,7 +80,7 @@ sap.ui.define([
 		},
 
 		cellClick: function (evt) {
-			//	evt.getParameter("cellControl").getParent()._setSelected(true);
+			//	evt.getParameter("cellControl").getParent()._setSelected(true); check
 			var cellControl = evt.getParameter("cellControl");
 			var isBinded = cellControl.getBindingContext("jsonModel");
 			if (isBinded) {
